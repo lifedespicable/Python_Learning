@@ -1,0 +1,4 @@
+# cat .gitignore
+
+# 下面是忽略.idea文件夹下面的文件
+.idea/
