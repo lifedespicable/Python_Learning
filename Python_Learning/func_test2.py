@@ -1,12 +1,15 @@
 # 下面这段代码的意思是如果不传入FIRST的值，那么就将FIRST的值设为0
 # 如果传入FIRST的值话，就传入FIRST的值
 
-def counter (FIRST = 0):
+
+def counter(FIRST=0):
     cnt = [FIRST]
+
     def add_one():
         cnt[0] += 1
         return cnt[0]
     return add_one
+
 
 num5 = counter(5)
 num10 = counter(10)
