@@ -13,6 +13,33 @@ def load_data(filename):
         data = _pickle.load(f)
         return data[b'data'], data[b'labels']
 
+class CifarData:
+    def __init__(self,filenames,need_shuffle):
+        all_data = []
+        all_labels = []
+        for filename in filenames:
+            data,labels = load_data(filename)
+            for item,label in zip(data,labels):
+                if label in [0,1]:
+                    all_data.append(item)
+                    all_labels.append(label)
+        self._data = np.vstack(all_data)
+        self._labels = np.hstack(all_labels)
+        self._num_examples = self._data.shape[0]
+        self._need_shuffle = need_shuffle
+        self._indicator = 0
+        if self._need_shuffle:
+            self._shuffle_data()
+
+    def _shuffle_data(self):
+        # [0,1,2,3,4,5] -> [5,3,4,2,0,1]
+        p = np.random.permutation(self._num_examples)
+        self._data = self._data[p]
+        self._labels = self._labels[p]
+
+    def next_batch(self,batch_size):
+        """:return batch_size examples as a batch."""
+
 
 x = tf.placeholder(tf.float32, [None, 3072])
 
@@ -47,3 +74,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction,tf.float64))
 
 with tf.name_scope('train_op'):
     train_op = tf.train.AdamOptimizer(1e-3).minimize(loss)
+
+init = tf.global_variables_initializer()
+with tf.Session as sess:
+    sess.run([loss,accuracy,train_op],feed_dict={x:,y:})
