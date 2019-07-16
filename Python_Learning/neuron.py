@@ -10,7 +10,7 @@ print(os.listdir(CIFAR_DIR))
 def load_data(filename):
     # read data from data file
     with open(filename, 'rb') as f:
-        data = _pickle.load(f)
+        data = _pickle.load(f,encoding='bytes')
         return data[b'data'], data[b'labels']
 
 class CifarData:
@@ -25,6 +25,8 @@ class CifarData:
                     all_labels.append(label)
         self._data = np.vstack(all_data)
         self._labels = np.hstack(all_labels)
+        print(self._data.shape)
+        print(self._labels.shape)
         self._num_examples = self._data.shape[0]
         self._need_shuffle = need_shuffle
         self._indicator = 0
@@ -38,7 +40,26 @@ class CifarData:
         self._labels = self._labels[p]
 
     def next_batch(self,batch_size):
-        """:return batch_size examples as a batch."""
+        """return batch_size examples as a batch."""
+        end_indicator =self._indicator + batch_size
+        if end_indicator > self._num_examples:
+            if self._need_shuffle:
+                self._shuffle_data()
+                self._indicator = 0
+                end_indicator = batch_size
+            else:
+                raise Exception("have no more examples")
+        if end_indicator > self._num_examples:
+            raise Exception("batch size is larger than all examples")
+        batch_data = self._data[self._indicator: end_indicator]
+        batch_labels =self._labels[self._indicator: end_indicator]
+        self._indicator = end_indicator
+        return batch_data, batch_labels
+
+train_filenames = [os.path.join(CIFAR_DIR, 'data_batch_%d' % i) for i in range(1,6)]
+test_filenames = [os.path.join(CIFAR_DIR, 'test_batch')]
+
+train_data = CifarData(train_filenames, True)
 
 
 x = tf.placeholder(tf.float32, [None, 3072])
@@ -76,5 +97,5 @@ with tf.name_scope('train_op'):
     train_op = tf.train.AdamOptimizer(1e-3).minimize(loss)
 
 init = tf.global_variables_initializer()
-with tf.Session as sess:
-    sess.run([loss,accuracy,train_op],feed_dict={x:,y:})
+# with tf.Session as sess:
+    # sess.run([loss,accuracy,train_op],feed_dict={x:,y:})
