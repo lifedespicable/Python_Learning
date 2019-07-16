@@ -60,20 +60,24 @@ train_filenames = [os.path.join(CIFAR_DIR, 'data_batch_%d' % i) for i in range(1
 test_filenames = [os.path.join(CIFAR_DIR, 'test_batch')]
 
 train_data = CifarData(train_filenames, True)
+test_data = CifarData(test_filenames, False)
 
+# batch_data, batch_labels = train_data.next_batch(10)
+# print(batch_data)
+# print(batch_labels)
 
-x = tf.placeholder(tf.float32, [None, 3072])
+x = tf.compat.v1.placeholder(tf.float32, [None, 3072])
 
 # y是[None]
-y = tf.placeholder(tf.int64, [None])
+y = tf.compat.v1.placeholder(tf.int64, [None])
 
 # w是一个(3072 * 1)
-w = tf.get_variable('w', [x.get_shape()[-1], 1],
+w = tf.compat.v1.get_variable('w', [x.get_shape()[-1], 1],
                     initializer=tf.random_normal_initializer(0, 1))
 
 # b是(1,)
-b = tf.get_variable('b', [1],
-                    initializer=tf.constant_initializer(0.0))
+b = tf.compat.v1.get_variable('b', [1],
+                    initializer = tf.constant_initializer(0.0))
 
 # x[None,3072] , w[3072,1] , x * w = [None,1]
 y_ = tf.matmul(x, w) + b
@@ -94,8 +98,21 @@ correct_prediction = tf.equal(tf.cast(predict,tf.int64),y_reshaped)
 accuracy = tf.reduce_mean(tf.cast(correct_prediction,tf.float64))
 
 with tf.name_scope('train_op'):
-    train_op = tf.train.AdamOptimizer(1e-3).minimize(loss)
+    train_op = tf.compat.v1.train.AdamOptimizer(1e-3).minimize(loss)
 
-init = tf.global_variables_initializer()
-# with tf.Session as sess:
-    # sess.run([loss,accuracy,train_op],feed_dict={x:,y:})
+init = tf.compat.v1.global_variables_initializer()
+batch_size = 20
+train_steps = 1000
+with tf.compat.v1.Session() as sess:
+    sess.run(init)
+    for i in range(train_steps):
+        batch_data, batch_labels = train_data.next_batch(batch_size)
+        loss_val, acc_val, _ = sess.run(
+            [loss,accuracy,train_op],
+            feed_dict={
+                x: batch_data,
+                y: batch_labels})
+        if i % 500 == 0:
+            print('[train] step : %d, loss: %4.5f, acc: %4.5f'
+                  % (i, loss_val, acc_val))
+
