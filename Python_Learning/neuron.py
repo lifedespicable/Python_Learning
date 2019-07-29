@@ -5,7 +5,8 @@ import _pickle
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-CIFAR_DIR = "D:\\算法学习指南\\06.深度学习之神经网络（CNN RNN GAN）算法原理+实战\\课程数据\\cifar-10-batches-py"
+# CIFAR_DIR = "D:\\算法学习指南\\06.深度学习之神经网络（CNN RNN GAN）算法原理+实战\\课程数据\\cifar-10-batches-py"
+CIFAR_DIR = "F:\\learning video\算法学习指南\\06.深度学习之神经网络（CNN RNN GAN）算法原理+实战\\课程数据\\cifar-10-batches-py"
 print(os.listdir(CIFAR_DIR))
 
 
