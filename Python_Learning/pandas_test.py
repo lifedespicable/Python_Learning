@@ -1,5 +1,6 @@
 from pandas import Series, DataFrame
 import pandas as pd
+import numpy as np
 
 # obj = Series([4, 5, 6 , -7])
 # print(obj)
@@ -33,29 +34,77 @@ data = {'city': ['shanghai', 'shanghai', 'shanghai', 'beijing', 'beijing'],
         'year': [2016, 2017, 2018, 2017, 2018],
         'pop': [1.5, 1.7, 3.6, 2.4, 2.9]}
 frame = DataFrame(data)
-print(frame)
+# print(frame)
 # print(frame.shape)
 # print(type(frame))
 # print(frame.dtypes)
 # print(frame.values)
 
-frame2 = DataFrame(data, columns= ['year', 'city', 'pop'])
-print(frame2)
-print(frame2['year'])
-print(frame2.year)
-print(frame2['city'])
-print(frame2.city)
-
-frame2['new'] = 100
-print(frame2)
-frame2['cap'] = (frame2.city == 'beijing')
-print(frame2)
+# frame2 = DataFrame(data, columns= ['year', 'city', 'pop'])
+# print(frame2)
+# print(frame2['year'])
+# print(frame2.year)
+# print(frame2['city'])
+# print(frame2.city)
+#
+# frame2['new'] = 100
+# print(frame2)
+# frame2['cap'] = (frame2.city == 'beijing')
+# print(frame2)
 
 pop ={'beijing': {2008: 1.5, 2009: 2.0},
       'shanghai':{2008: 2.0, 2009: 3.6}}
 frame3 = DataFrame(pop)
-print(frame3)
-print(frame3.T)
-print(frame3.shape)
-print(type(frame3))
-print(frame3.values)
+# print(frame3)
+# print(frame3.T)
+# print(frame3.shape)
+# print(type(frame3))
+# print(frame3.values)
+
+obj4 = Series([4.5 ,7.2, -5.3, 3.6], index= ['b', 'd', 'c', 'a'])
+# print(obj4)
+# print(obj4.shape)
+# print(type(obj4))
+# print(obj4.index)
+# print(obj4.values)
+# print(obj4.dtype)
+
+obj5 = obj4.reindex(['a', 'b', 'c', 'd', 'e'], fill_value= 0)
+# print(obj5)
+
+obj6 = Series(['blue', 'purple', 'yellow'],index= [0 , 2, 4])
+# print(obj6.reindex(range(6),method= 'ffill'))
+# print(obj6.reindex(range(6),method= 'bfill'))
+
+from numpy import nan as NA
+data = Series([1, NA, 2])
+# print(data)
+# print(data.dropna())
+# print(type(data))
+# print(data.shape)
+# print(data.values)
+# print(data.index)
+
+data2 = DataFrame([[1., 6.5, 3], [1., NA, NA],
+                   [NA, NA, NA]])
+data2[4] = NA
+# print(data2)
+# print(data2.dropna())
+# print(data2.dropna(how= 'all'))
+# print(data2.dropna(axis= 1, how= 'all'))
+
+data2.fillna(0)
+# print(data2.fillna(0))
+# print(data2.fillna(0, inplace= True))
+# print(data2)
+
+data3 = Series(np.random.randn(10),
+               index=[['a', 'a' ,'a', 'b', 'b', 'b', 'c', 'c', 'd', 'd'],
+                      [1, 2, 3, 1, 2, 3, 1, 2, 2, 3]])
+print(data3)
+# print(type(data3))
+# print(data3.index)
+# print(data3.values)
+# print(data3['b':'c'])
+print(data3.unstack().dropna(axis= 1,how= 'all'))
+print(data3.unstack().stack())
