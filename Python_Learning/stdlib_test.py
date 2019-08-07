@@ -39,7 +39,11 @@ import re
 # print(p.match('a'))
 # print(p.match('d'))
 
-# p = re.compile('jpg$')  # 表示去匹配以'jpg'为结尾的字符串
+p = re.compile('jpg$')  # 表示去匹配以'jpg'为结尾的字符串
+
+# 判断一个文件是否是以jpg结尾
+# filename = 'test.jpg'
+# print(filename.endswith('jpg'))
 
 # p = re.compile('ca{4,6}t')
 # print(p.match('cat'))
@@ -63,7 +67,7 @@ import re
 # p = re.compile('....-..-..')
 # print(p.match('2018-05-16'))
 
-p = re.compile(r'(\d+)-(\d+)-(\d+)')
+# p = re.compile(r'(\d+)-(\d+)-(\d+)')
 # print(p.match('aa2018-05-16bb').group(3))
 # print(p.match('2018-05-16').groups())
 # year, month, day = p.match('2018-03-18').groups()
@@ -83,5 +87,5 @@ p = re.compile(r'(\d+)-(\d+)-(\d+)')
 # print(p3)
 
 import random
-print(random.randint(1,5))
-print(random.choice(['aa','bb','cc','dd','ee']))
+# print(random.randint(1,5))
+# print(random.choice(['aa','bb','cc','dd','ee']))
