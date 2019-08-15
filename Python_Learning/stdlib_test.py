@@ -25,6 +25,7 @@
 # '^$'：表示的是这一行是空行
 # '.*?'：表示的是不使用贪婪模式，只匹配我们第一个匹配上的内容；'*'匹配会尽可能长的去匹配
 
+import random
 import re
 # p = re.compile('a')
 # print(p.match('a'))
@@ -86,6 +87,5 @@ p = re.compile('jpg$')  # 表示去匹配以'jpg'为结尾的字符串
 # p3 = re.sub(r'\D','',p2)
 # print(p3)
 
-import random
-# print(random.randint(1,5))
-# print(random.choice(['aa','bb','cc','dd','ee']))
+print(random.randint(1, 5))
+print(random.choice(['aa', 'bb', 'cc', 'dd', 'ee']))
