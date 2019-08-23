@@ -9,5 +9,4 @@ img_dim = (ROWS,COLS,CHANNELS)
 densenet_depth = 40
 densenet_growth_rate = 10
 
-### 此时验证集准确率为0.91514
-
+### 此时验证集准确率为0.92457
