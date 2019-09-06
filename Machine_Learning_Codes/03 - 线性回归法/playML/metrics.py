@@ -32,7 +32,7 @@ def mean_absolute_error(y_true, y_predict):
 
     return np.sum(np.absolute(y_predict - y_true)) / len(y_predict)
 
-def r2_square(y_true, y_predict):
+def r2_score(y_true, y_predict):
     """计算 y_true 和 y_predict 之间的 R Square"""
 
     return 1 - mean_squared_error(y_true, y_predict) / np.var(y_true)
