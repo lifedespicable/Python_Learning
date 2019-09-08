@@ -34,11 +34,12 @@ class LinearRegression:
                 return float('inf')
 
         def dJ(theta, X_b, y):
-            res = np.empty(len(theta))
-            res[0] = np.sum(X_b.dot(theta) - y)
-            for i in range(1, len(theta)):
-                res[i] = (X_b.dot(theta) - y).dot(X_b[:, i])
-            return res * 2 / len(X_b)
+            # res = np.empty(len(theta))
+            # res[0] = np.sum(X_b.dot(theta) - y)
+            # for i in range(1, len(theta)):
+            #     res[i] = (X_b.dot(theta) - y).dot(X_b[:, i])
+            # return res * 2 / len(X_b)
+            return X_b.T.dot(X_b.dot(theta) - y) * 2 / len(X_b)
 
         def gradient_descent(X_b, y, initial_theta, eta, n_iters = 1e4, epsilon = 1e-8):
 
@@ -47,7 +48,8 @@ class LinearRegression:
 
             while cur_iter < n_iters:
                 gradient = dJ(theta, X_b, y)
-                last_theta = theta - eta * gradient
+                last_theta = theta
+                theta = theta - eta * gradient
                 if (abs(J(theta, X_b, y) - J(last_theta, X_b, y)) < epsilon):
                     break
 
