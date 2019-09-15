@@ -66,6 +66,42 @@ class LinearRegression:
 
         return self
 
+    def fit_sgd(self, X_train, y_train, n_iters = 5, t0 = 5, t1 = 50):
+        """根据训练数据集 X_train, y_train, 使用梯度下降法训练 Linear Regression 模型"""
+        assert X_train.shape[0] == y_train.shape[0], \
+            'the size of X_train must be equal to the size of y_train'
+        assert n_iters >= 1
+
+        def dJ_sgd(theta, X_b_i, y_i):
+            return X_b_i * (X_b_i.dot(theta) - y_i) * 2.
+
+        def sgd(X_b, y, initial_theta, n_iters, t0 = 5, t1 = 50):
+
+            def learning_rate(t):
+                return t0 / (t + t1)
+
+            theta = initial_theta
+            m = len(X_b)
+
+            for cur_iter in range(n_iters):
+                indexes = np.random.permutation(m)
+                X_b_new = X_b[indexes]
+                y_new = y[indexes]
+                for i in range(m):
+                    gradient = dJ_sgd(theta, X_b_new[i], y_new[i])
+                    theta = theta - learning_rate(cur_iter * m + i) * gradient
+
+            return theta
+
+        X_b = np.hstack([np.ones((len(X_train ), 1)), X_train])
+        initial_theta = np.random.rand(X_b.shape[1])
+        self._theta = sgd(X_b, y_train, initial_theta, n_iters, t0, t1)
+
+        self.interception_ = self._theta[0]
+        self.coef_ = self._theta[1:]
+
+        return self
+
     def predict(self, X_predict):
         """给定待预测数据集 X_predict, 返回表示 X_predict 的结果向量"""
         assert self.interception_ is not None and self.coef_ is not None, \
