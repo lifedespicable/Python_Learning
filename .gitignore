@@ -2,3 +2,4 @@
 
 # 下面是忽略.idea文件夹下面的文件
 .idea/
+Machine_Learning_Codes/05 - PCA 与梯度上升法/mnist-original.mat
