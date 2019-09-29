@@ -80,3 +80,5 @@ class LogisticRegression:
 
     def __repr__(self):
         return 'LogisticRegression()'
+
+
